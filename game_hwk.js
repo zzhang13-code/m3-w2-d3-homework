@@ -1,5 +1,5 @@
 //on page load -> generate game board;
-window.onload = function(){
+window.onload = () => {
     console.log("Page Loaded")
     setRandomTileOrder(12);
     setTiles();
@@ -7,16 +7,16 @@ window.onload = function(){
 
 //global variable
 
-var i = 0;
-var clicks;
-var timeScore;
+let i = 0;
+let clicks;
+let timeScore;
 
 /*start button initiates game and starts counter
 initiates game start on button press*/
-var startButton = document.getElementById("startGame")
+let startButton = document.getElementById("startGame")
 startButton.addEventListener("click", startGame);
 
-function startGame() {
+const startGame = () => {
     tiles.forEach(tile => tile.addEventListener("click", displayTile));
     resetTiles();
     startButton.disabled = true;
@@ -28,8 +28,8 @@ function startGame() {
 document.getElementById('endGame').addEventListener("click", endGame);
 
 
-function endGame() {
-    function endTimer() {
+const endGame = () => {
+    const endTimer = () => {
         timeScore = document.getElementById("timer").innerText;
         console.log(timeScore);
         clearInterval(timer);
@@ -44,10 +44,10 @@ function endGame() {
 /* createRandom number function
 creates random number which will later be assigned an icon
 creates an array of 12 random numbers*/
-var randomOrderArray = [];
-function setRandomTileOrder(numberOfTiles) {
+let randomOrderArray = [];
+const setRandomTileOrder = (numberOfTiles) => {
     while (randomOrderArray.length < numberOfTiles) {
-        var randomNum = Math.random();
+        let randomNum = Math.random();
         randomNum = randomNum * (numberOfTiles -1);
         randomNum = Math.round(randomNum) + 1;
 
@@ -60,10 +60,10 @@ function setRandomTileOrder(numberOfTiles) {
 }
 
 //Set tiles variable for use throughout code
-var tiles = document.querySelectorAll(".gametile");
+let tiles = document.querySelectorAll(".gametile");
 
-function setTiles(){
-    for(tile of tiles){
+const setTiles = () => {
+    for (let tile of tiles){
         tile.innerHTML = randomOrderArray[i];
         i++;
     //replace numerical values with icon pairs
@@ -93,11 +93,12 @@ function setTiles(){
 }
 
 //Timer Function -> starts timer when game is started end when game is compvare or game is cancelled.
-var count;
+let count;
+let timer;
 
-function startTimer() {
+const startTimer = () => {
     clearInterval(timer); //clears timer before timer starts. This fixes issue if timer is triggered again, when already running. 
-    count = 0, timer = setInterval(function () {
+    count = 0, timer = setInterval(() => {
         count = count++;
         document.getElementById("timer").firstChild.innerText = count++;
 
@@ -111,28 +112,28 @@ function startTimer() {
 
 /* icon assign function -> replaces random numbers with icon pairs
 when icon assigned, tile is also assigned an attribute icon variables */
-var football = `<i class="fas fa-football-ball"></i>`;
-var mask = `<i class="fas fa-ufo"></i>`;
-var pizza = `<i class="fas fa-pizza-slice"></i>`;
-var lightning = `<i class="far fa-bolt"></i>`;
-var bulb = `<i class="fal fa-lightbulb"></i>`;
-var rocket = `<i class="fas fa-rocket"></i>`;
-var bacteria = `<i class="fas fa-bacterium"></i>`;
-var kiwi = `<i class="fas fa-kiwi-bird"></i>`;
-var cocktail = `<i class="fas fa-cocktail"></i>`;
+let football = `<i class="fas fa-football-ball"></i>`;
+let mask = `<i class="fas fa-ufo"></i>`;
+let pizza = `<i class="fas fa-pizza-slice"></i>`;
+let lightning = `<i class="far fa-bolt"></i>`;
+let bulb = `<i class="fal fa-lightbulb"></i>`;
+let rocket = `<i class="fas fa-rocket"></i>`;
+let bacteria = `<i class="fas fa-bacterium"></i>`;
+let kiwi = `<i class="fas fa-kiwi-bird"></i>`;
+let cocktail = `<i class="fas fa-cocktail"></i>`;
 
 
-var selectedTile = ''
-var tileIcon;
-var tileIcons =[];
-var tileIds =[];
+let selectedTile = ''
+let tileIcon;
+let tileIcons =[];
+let tileIds =[];
 
 
 //displayTile -> function which listens for click event and displays tile value on click
 tiles.forEach(tile => tile.addEventListener("click", displayTile));
-var n = 0;
+let n = 0;
 
-function displayTile(e) {
+const displayTile = (e) => {
     
     //reveal tile by changing bg color and changing font-size from 0 to 3em;
     this.classList.remove("hideTile");
@@ -141,7 +142,7 @@ function displayTile(e) {
     // logs the value of the tile's icon and Id
     tileIcon = e.target.getAttribute("icon");
     tileIcons.push(tileIcon);
-    var tileId = e.target.getAttribute("id");
+    let tileId = e.target.getAttribute("id");
     tileIds.push(tileId);
    
     // this counts number of clicks
@@ -154,12 +155,12 @@ function displayTile(e) {
     }
 };
 
-function checkMatch(tileIcons, tileIds,n){
+const checkMatch = (tileIcons, tileIds,n) => {
     console.log(n);
     console.log(n+1);
         if(tileIcons[n] !== tileIcons[n+1]){
             console.log("no match");
-            setTimeout(function(){
+            setTimeout(() => {
                     document.getElementById(tileIds[n+1]).classList.remove("displayTile");
                     document.getElementById(tileIds[n]).classList.remove("displayTile");
             }, 1000);  
@@ -179,14 +180,14 @@ function checkMatch(tileIcons, tileIds,n){
 
 
 //countClicks -> calculates number of user clicks -> needed to calculate score
-function countMoves(){
+const countMoves = () => {
     clicks = n;
     document.getElementById("clicks").firstChild.innerHTML = clicks;
 }
 
 //ClearTiles -> Clear tiles when new game is started;
-function clearTiles(){
-    for(var n = 0; n < tiles.length; n++){
+const clearTiles = () => {
+    for(let n = 0; n < tiles.length; n++){
         tiles[n].style.fontSize = "0em";
         tiles[n].style.backgroundColor = "#44445a";
     }
@@ -200,9 +201,9 @@ if match icons remain displayed and correctly guessed tiles become disabled. */
 //compvareGAme -> When the number of correct answers == the number of cells the game can end.
 
 //calculateScore -> adds number of clicks and elapsed time to calculate score & displays score upon game compvarion. 
-function calculateScore(){
+const calculateScore = () => {
     timeScore = parseInt(timeScore);
-    var calculatedScore = (timeScore + clicks);
+    let calculatedScore = (timeScore + clicks);
     console.log(calculatedScore);
     document.querySelector("#score").firstChild.innerHTML = calculatedScore;
 }
@@ -210,20 +211,20 @@ function calculateScore(){
 
 //additional levels of difficulty
 
-var newRGB;
+let newRGB;
 
-function generateRGBVal() {
+const generateRGBVal = () => {
 
-    function generateRandomColor() {
-        var r = Math.random();
+    const generateRandomColor = () => {
+        let r = Math.random();
         r = r * 255;
         r = Math.round(r);
         return r;
     }
 
-    var rgbValue = [];
-    for (var i = 0; i <= 2; i++) {
-        var singleVal = generateRandomColor();
+    let rgbValue = [];
+    for (let i = 0; i <= 2; i++) {
+        let singleVal = generateRandomColor();
         rgbValue.push(singleVal);
     }
     newRGB = `rgb(${rgbValue[0]},${rgbValue[1]},${rgbValue[2]})`;
@@ -234,8 +235,8 @@ function generateRGBVal() {
 // publish leaderboard;
 //use api to generate random icon or picture
 
-function resetTiles(){
-    for(tile of tiles){
+const resetTiles = () => {
+    for (let tile of tiles){
         tile.style.backgroundColor ="#44445a";
         tile.removeAttribute("state");
         tile.classList.remove("hideTile"); 
